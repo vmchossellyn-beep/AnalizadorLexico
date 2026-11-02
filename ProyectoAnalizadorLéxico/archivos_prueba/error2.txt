@@ -1,0 +1,5 @@
+int x = 100;
+string texto = "Cadena de texto sin cerrar
+int y = 200;
+double precio = 15.8.9;
+boolean bandera = true;

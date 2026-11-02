@@ -151,6 +151,11 @@
     <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="archivos_prueba\error1.txt" />
+    <Content Include="archivos_prueba\error2.txt" />
+    <Content Include="archivos_prueba\inicial1.txt" />
+    <Content Include="archivos_prueba\inicial2.txt" />
+    <Content Include="archivos_prueba\inicial3.txt" />
     <Content Include="palabras_reservadas.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
