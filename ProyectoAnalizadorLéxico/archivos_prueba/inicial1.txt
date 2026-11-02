@@ -1,6 +1,0 @@
-int contador = 0;
-float promedio = 15.5;
-string mensaje = "Inicio de proceso";
-if (contador < 10) {
-    contador = contador + 1;
-}

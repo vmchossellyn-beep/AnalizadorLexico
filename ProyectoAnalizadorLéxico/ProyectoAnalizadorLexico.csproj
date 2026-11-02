@@ -148,31 +148,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="archivos_prueba\error1.txt">
+    <None Include="bin\Debug\archivos_prueba\inicial3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="archivos_prueba\error2.txt">
+    <None Include="bin\Debug\archivos_prueba\inicial2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="archivos_prueba\inicial1.txt">
+    <None Include="bin\Debug\archivos_prueba\inicial1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="archivos_prueba\inicial2.txt">
+    <None Include="bin\Debug\archivos_prueba\error2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="archivos_prueba\inicial3.txt">
+    <None Include="bin\Debug\archivos_prueba\error1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="diccionarios\palabras_reservadas.txt" />
     <Content Include="diccionarios\signos.txt" />
   </ItemGroup>

@@ -1,8 +1,0 @@
-double total = 250.75;
-int limite = 500;
-
-if (total < limite) {
-    total = total * 1.12;
-} else {
-    total = limite;
-}
