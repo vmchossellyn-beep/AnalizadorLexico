@@ -45,7 +45,11 @@
             this.grpExportaciones = new System.Windows.Forms.GroupBox();
             this.grpSistema = new System.Windows.Forms.GroupBox();
             this.grpEstadistica = new System.Windows.Forms.GroupBox();
-            this.lblTiempoTotal = new System.Windows.Forms.Label();
+            this.lblTiempoEjecucion = new System.Windows.Forms.Label();
+            this.lblTotalTokens = new System.Windows.Forms.Label();
+            this.lblTotalSimbolos = new System.Windows.Forms.Label();
+            this.lblTotalLineas = new System.Windows.Forms.Label();
+            this.lblTotalErrores = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dvgTokens)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvErrores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimbolos)).BeginInit();
@@ -210,9 +214,9 @@
             this.grpExportaciones.Controls.Add(this.btnExportar);
             this.grpExportaciones.Controls.Add(this.btnExpExcel);
             this.grpExportaciones.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold);
-            this.grpExportaciones.Location = new System.Drawing.Point(555, 551);
+            this.grpExportaciones.Location = new System.Drawing.Point(537, 551);
             this.grpExportaciones.Name = "grpExportaciones";
-            this.grpExportaciones.Size = new System.Drawing.Size(360, 151);
+            this.grpExportaciones.Size = new System.Drawing.Size(379, 151);
             this.grpExportaciones.TabIndex = 14;
             this.grpExportaciones.TabStop = false;
             this.grpExportaciones.Text = "Exportar Código";
@@ -223,7 +227,7 @@
             this.grpSistema.Controls.Add(this.btnAnalizar);
             this.grpSistema.Controls.Add(this.btnDiccionario);
             this.grpSistema.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold);
-            this.grpSistema.Location = new System.Drawing.Point(544, 19);
+            this.grpSistema.Location = new System.Drawing.Point(537, 19);
             this.grpSistema.Name = "grpSistema";
             this.grpSistema.Size = new System.Drawing.Size(379, 195);
             this.grpSistema.TabIndex = 15;
@@ -232,23 +236,63 @@
             // 
             // grpEstadistica
             // 
-            this.grpEstadistica.Controls.Add(this.lblTiempoTotal);
+            this.grpEstadistica.Controls.Add(this.lblTotalErrores);
+            this.grpEstadistica.Controls.Add(this.lblTotalLineas);
+            this.grpEstadistica.Controls.Add(this.lblTotalSimbolos);
+            this.grpEstadistica.Controls.Add(this.lblTotalTokens);
+            this.grpEstadistica.Controls.Add(this.lblTiempoEjecucion);
             this.grpEstadistica.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold);
-            this.grpEstadistica.Location = new System.Drawing.Point(544, 232);
+            this.grpEstadistica.Location = new System.Drawing.Point(537, 237);
             this.grpEstadistica.Name = "grpEstadistica";
             this.grpEstadistica.Size = new System.Drawing.Size(379, 287);
             this.grpEstadistica.TabIndex = 16;
             this.grpEstadistica.TabStop = false;
             this.grpEstadistica.Text = "Estadísticas";
             // 
-            // lblTiempoTotal
+            // lblTiempoEjecucion
             // 
-            this.lblTiempoTotal.AutoSize = true;
-            this.lblTiempoTotal.Location = new System.Drawing.Point(21, 40);
-            this.lblTiempoTotal.Name = "lblTiempoTotal";
-            this.lblTiempoTotal.Size = new System.Drawing.Size(216, 20);
-            this.lblTiempoTotal.TabIndex = 0;
-            this.lblTiempoTotal.Text = "Tiempo total de análisis:";
+            this.lblTiempoEjecucion.AutoSize = true;
+            this.lblTiempoEjecucion.Location = new System.Drawing.Point(21, 40);
+            this.lblTiempoEjecucion.Name = "lblTiempoEjecucion";
+            this.lblTiempoEjecucion.Size = new System.Drawing.Size(216, 20);
+            this.lblTiempoEjecucion.TabIndex = 0;
+            this.lblTiempoEjecucion.Text = "Tiempo total de análisis:";
+            // 
+            // lblTotalTokens
+            // 
+            this.lblTotalTokens.AutoSize = true;
+            this.lblTotalTokens.Location = new System.Drawing.Point(21, 135);
+            this.lblTotalTokens.Name = "lblTotalTokens";
+            this.lblTotalTokens.Size = new System.Drawing.Size(220, 20);
+            this.lblTotalTokens.TabIndex = 1;
+            this.lblTotalTokens.Text = "Número Total de Tokens:";
+            // 
+            // lblTotalSimbolos
+            // 
+            this.lblTotalSimbolos.AutoSize = true;
+            this.lblTotalSimbolos.Location = new System.Drawing.Point(21, 184);
+            this.lblTotalSimbolos.Name = "lblTotalSimbolos";
+            this.lblTotalSimbolos.Size = new System.Drawing.Size(237, 20);
+            this.lblTotalSimbolos.TabIndex = 2;
+            this.lblTotalSimbolos.Text = "Número Total de Símbolos:";
+            // 
+            // lblTotalLineas
+            // 
+            this.lblTotalLineas.AutoSize = true;
+            this.lblTotalLineas.Location = new System.Drawing.Point(21, 86);
+            this.lblTotalLineas.Name = "lblTotalLineas";
+            this.lblTotalLineas.Size = new System.Drawing.Size(216, 20);
+            this.lblTotalLineas.TabIndex = 3;
+            this.lblTotalLineas.Text = "Número Total de Líneas:";
+            // 
+            // lblTotalErrores
+            // 
+            this.lblTotalErrores.AutoSize = true;
+            this.lblTotalErrores.Location = new System.Drawing.Point(21, 234);
+            this.lblTotalErrores.Name = "lblTotalErrores";
+            this.lblTotalErrores.Size = new System.Drawing.Size(223, 20);
+            this.lblTotalErrores.TabIndex = 4;
+            this.lblTotalErrores.Text = "Número Total de Errores:";
             // 
             // FormPrincipal
             // 
@@ -298,7 +342,11 @@
         private System.Windows.Forms.GroupBox grpExportaciones;
         private System.Windows.Forms.GroupBox grpSistema;
         private System.Windows.Forms.GroupBox grpEstadistica;
-        private System.Windows.Forms.Label lblTiempoTotal;
+        private System.Windows.Forms.Label lblTiempoEjecucion;
+        private System.Windows.Forms.Label lblTotalErrores;
+        private System.Windows.Forms.Label lblTotalLineas;
+        private System.Windows.Forms.Label lblTotalSimbolos;
+        private System.Windows.Forms.Label lblTotalTokens;
     }
 }
 

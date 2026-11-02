@@ -5,6 +5,7 @@ using ProyectoAnalizadorLéxico.logica;
 using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace ProyectoAnalizadorLéxico
 {
@@ -12,6 +13,9 @@ namespace ProyectoAnalizadorLéxico
     {
         
         private AnalizadorLexico analizadorLexico;
+
+        private double tiempoMs;
+        private int totalLineas, totalTokens, totalSimbolos, totalErrores;
 
         public FormPrincipal()
         {
@@ -35,7 +39,11 @@ namespace ProyectoAnalizadorLéxico
                 return;
             }
 
+            Stopwatch cronometro = Stopwatch.StartNew();
+
             analizadorLexico.Analizar(codigoFuente);
+
+            cronometro.Stop();
 
             var listaTokens = analizadorLexico.ObtenerTokens();
             var listaErrores = analizadorLexico.ObtenerErrores();
@@ -48,6 +56,20 @@ namespace ProyectoAnalizadorLéxico
 
             dgvSimbolos.DataSource = null;
             dgvSimbolos.DataSource = analizadorLexico.ObtenerTablaSimbolos().ObtenerLista();
+
+            var listaSimbolos = analizadorLexico.ObtenerTablaSimbolos().ObtenerLista();
+
+            tiempoMs = cronometro.Elapsed.TotalMilliseconds;
+            totalLineas = codigoFuente.Split('\n').Length;
+            totalTokens = listaTokens.Count;
+            totalSimbolos = listaSimbolos.Count;
+            totalErrores = listaErrores.Count;
+
+            lblTiempoEjecucion.Text = $"Tiempo de ejecución: {tiempoMs:F3} ms";
+            lblTotalLineas.Text = $"Total de líneas: {totalLineas}";
+            lblTotalTokens.Text = $"Total de tokens: {totalTokens}";
+            lblTotalSimbolos.Text = $"Total de símbolos: {totalSimbolos}";
+            lblTotalErrores.Text = $"Total de errores: {totalErrores}";
 
             if (listaErrores != null && listaErrores.Count > 0)
             {
@@ -92,6 +114,49 @@ namespace ProyectoAnalizadorLéxico
 
         }
 
+        private PdfPTable CrearTablaResumenPdf()
+        {
+            PdfPTable tabla = new PdfPTable(2);
+            tabla.WidthPercentage = 50;
+            tabla.HorizontalAlignment = Element.ALIGN_LEFT;
+            tabla.SetWidths(new float[] { 65f, 35f });
+
+            Font fuenteEncabezado = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
+            Font fuenteTexto = FontFactory.GetFont(FontFactory.HELVETICA, 10);
+
+            foreach (string encabezado in new[] { "Métrica", "Valor" })
+            {
+                PdfPCell celda = new PdfPCell(new Phrase(encabezado, fuenteEncabezado));
+                celda.BackgroundColor = new BaseColor(220, 220, 220);
+                celda.HorizontalAlignment = Element.ALIGN_CENTER;
+                celda.Padding = 4f;
+                tabla.AddCell(celda);
+            }
+
+            string[,] filas =
+            {
+                { "Tiempo de ejecución", $"{tiempoMs:F3} ms" },
+                { "Total de líneas", totalLineas.ToString() },
+                { "Total de tokens", totalTokens.ToString() },
+                { "Total de símbolos", totalSimbolos.ToString() },
+                { "Total de errores", totalErrores.ToString() }
+            };
+
+            for (int i = 0; i < filas.GetLength(0); i++)
+            {
+                PdfPCell metrica = new PdfPCell(new Phrase(filas[i, 0], fuenteTexto));
+                metrica.Padding = 4f;
+                tabla.AddCell(metrica);
+
+                PdfPCell valor = new PdfPCell(new Phrase(filas[i, 1], fuenteTexto));
+                valor.HorizontalAlignment = Element.ALIGN_CENTER;
+                valor.Padding = 4f;
+                tabla.AddCell(valor);
+            }
+
+            return tabla;
+        }
+
         private void btnExportar_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -113,6 +178,9 @@ namespace ProyectoAnalizadorLéxico
                     titulo.Alignment = Element.ALIGN_CENTER;
                     doc.Add(titulo);
 
+                    doc.Add(new Paragraph("Resumen del Análisis:\n\n", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)));
+                    doc.Add(CrearTablaResumenPdf());
+                    doc.Add(new Paragraph("\n"));
                     doc.Add(new Paragraph("Código Fuente Analizado:\n", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)));
 
                     Font fontCodigo = FontFactory.GetFont(FontFactory.COURIER, 10);
@@ -207,6 +275,41 @@ namespace ProyectoAnalizadorLéxico
                         hoja.Cell(filaActual, 1).Style.Font.Bold = true;
                         hoja.Cell(filaActual, 1).Style.Font.FontSize = 14;
                         filaActual += 2;
+
+                        hoja.Cell(filaActual, 1).Value = "RESUMEN DEL ANÁLISIS";
+                        hoja.Cell(filaActual, 1).Style.Font.Bold = true;
+                        filaActual++;
+
+                        int inicioResumen = filaActual;
+
+                        hoja.Cell(filaActual, 1).Value = "Métrica";
+                        hoja.Cell(filaActual, 2).Value = "Valor";
+                        var encabezado = hoja.Range(filaActual, 1, filaActual, 2);
+                        encabezado.Style.Font.Bold = true;
+                        encabezado.Style.Fill.BackgroundColor = XLColor.LightGray;
+                        encabezado.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        filaActual++;
+
+                        hoja.Cell(filaActual, 1).Value = "Tiempo de ejecución (ms)";
+                        hoja.Cell(filaActual, 2).Value = Math.Round(tiempoMs, 3);
+                        filaActual++;
+                        hoja.Cell(filaActual, 1).Value = "Total de líneas";
+                        hoja.Cell(filaActual, 2).Value = totalLineas;
+                        filaActual++;
+                        hoja.Cell(filaActual, 1).Value = "Total de tokens";
+                        hoja.Cell(filaActual, 2).Value = totalTokens;
+                        filaActual++;
+                        hoja.Cell(filaActual, 1).Value = "Total de símbolos";
+                        hoja.Cell(filaActual, 2).Value = totalSimbolos;
+                        filaActual++;
+                        hoja.Cell(filaActual, 1).Value = "Total de errores";
+                        hoja.Cell(filaActual, 2).Value = totalErrores;
+
+                        var rangoResumen = hoja.Range(inicioResumen, 1, filaActual, 2);
+                        rangoResumen.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                        rangoResumen.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                        hoja.Range(inicioResumen + 1, 2, filaActual, 2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        filaActual += 3;
 
                         hoja.Cell(filaActual, 1).Value = "CÓDIGO FUENTE ANALIZADO:";
                         hoja.Cell(filaActual, 1).Style.Font.Bold = true;
